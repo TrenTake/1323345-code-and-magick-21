@@ -15,6 +15,10 @@ var renderCloud = function(ctx, x, y, color) {
   ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
 };
 
+var getRandomInt = function (max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
 var getMaxElement = function(arr) {
   var maxElement = arr[0];
 
@@ -46,22 +50,28 @@ window.renderStatistics = function(ctx, players, times) {
   var maxTime = getMaxElement(times);
 
   for (var i = 0; i < players.length; i++) {
+    ctx.fillStyle = "black";
     ctx.fillText(
       players[i],
       CLOUD_X + GAP / 1.5 + FONT_GAP + (GAP + barWidth) * i,
       CLOUD_Y + GAP * 5
     );
+    if (players[i] == 'Вы') {
+      ctx.fillStyle = "red";
+    } else {
+      ctx.fillStyle = 'hsl(240,' + getRandomInt(100) +',50%)';
+    }
     ctx.fillRect(
       CLOUD_X + GAP + (GAP + barWidth) * i,
       CLOUD_Y + TEXT_WIDTH + GAP * 3.5,
       barWidth,
       -((BAR_HEIGHT * times[i]) / maxTime)
     );
-  }
- // цвет
-  if (fillText === 'Вы') {
-    fillStyle = rgba(255, 0, 0, 1);
-  } else {
-    fillStyle = hsl(251, 98, 52);
+    ctx.fillStyle = "black";
+    ctx.fillText(
+      Math.round(((BAR_HEIGHT * times[i]) / maxTime)),
+      CLOUD_X + GAP / 1.5 + FONT_GAP + (GAP + barWidth) * i,
+     -((BAR_HEIGHT * times[i]) / maxTime) + (CLOUD_Y + TEXT_WIDTH + GAP * 3.2)
+    )
   }
 };
